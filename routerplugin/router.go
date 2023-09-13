@@ -3,8 +3,10 @@ package routerplugin
 import (
 	db "HA/DB"
 	"HA/netlink"
-	"fmt"
 	"sync"
+	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Router struct {
@@ -27,8 +29,12 @@ func NewRouter(key string, role string, status bool, ipaddr []byte, mask []byte,
 	}
 }
 func (r *Router) Run(wg *sync.WaitGroup) {
+	log.WithFields(log.Fields{
+		"time":   time.Now(),
+		"Server": r.Key,
+	}).Info("Server running")
+
 	defer wg.Done()
-	fmt.Printf("Server %v running\n", r.Key)
 	r.Status = true
 	r.Role = "Premary"
 	netlink.Netlinked(r.IPaddr, r.Mask, r.Iface)
@@ -38,8 +44,15 @@ func (r *Router) Run(wg *sync.WaitGroup) {
 }
 
 func (r *Router) Watcher(r2 *Router, wg *sync.WaitGroup) {
+	log.WithFields(log.Fields{
+		"Server": r.Key,
+		"Watch To": r2.Key,
+		"time":   time.Now(),
+		
+	}).Info("Start watching")
+
 	defer wg.Done()
-	fmt.Printf("Start %v watching To %v \n", r.Key, r2.Key)
+	//fmt.Printf("Start %v watching To %v \n", r.Key, r2.Key)
 
 	db.Watch(r2.Key)
 
