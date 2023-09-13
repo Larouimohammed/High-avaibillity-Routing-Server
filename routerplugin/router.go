@@ -30,7 +30,7 @@ func NewRouter(key string, role string, status bool, ipaddr []byte, mask []byte,
 }
 func (r *Router) Run(wg *sync.WaitGroup) {
 	log.WithFields(log.Fields{
-		"time":   time.Now(),
+		"time":   time.Now().Format(time.RFC3339),
 		"Server": r.Key,
 	}).Info("Server running")
 
@@ -47,7 +47,7 @@ func (r *Router) Watcher(r2 *Router, wg *sync.WaitGroup) {
 	log.WithFields(log.Fields{
 		"Server": r.Key,
 		"Watch To": r2.Key,
-		"time":   time.Now(),
+		"time":   time.Now().Format(time.RFC3339),
 		
 	}).Info("Start watching")
 
