@@ -13,7 +13,7 @@ import (
 var (
 	client   = SetupDb()
 	ctx      = context.Background()
-	Messages = make(chan string)
+	Messages = make(chan string,1024)
 )
 
 func SetupDb() *clientv3.Client {
@@ -61,9 +61,10 @@ loop:
 
 					t, _ := time.Parse(time.RFC1123, string(ev.Value))
 					fmt.Println(string(ev.Value))
-
-					if time.Now().After(t.Add(10 * time.Second)) {
-						Messages <- "change router"
+                     b:=time.Now().After(t.Add(10 * time.Second))
+					 _=b
+					 if true {
+						Messages <- Key
 						break loop
 					}
 
