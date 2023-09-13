@@ -63,7 +63,7 @@ loop:
 					fmt.Println(string(ev.Value))
                      b:=time.Now().After(t.Add(10 * time.Second))
 					 _=b
-					 if true {
+					 if b {
 						Messages <- Key
 						break loop
 					}
